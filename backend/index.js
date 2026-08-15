@@ -12,7 +12,10 @@ import moviesRoutes from "./routes/moviesRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
 // Configuration
-dotenv.config();
+dotenv.config({
+    path : path.resolve(process.cwd(), "../.env")
+});
+console.log(`Environment Variables Loaded:`, process.env.MONGO_URI);
 connectDB();
 
 const app = express();
