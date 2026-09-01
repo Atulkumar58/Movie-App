@@ -1,12 +1,16 @@
+import fs from "fs";
 import path from "path";
 import express from "express";
 import multer from "multer";
 
 const router = express.Router();
 
+const uploadDir = path.join(process.cwd(), "uploads");
+fs.mkdirSync(uploadDir, { recursive: true });
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, uploadDir);
   },
 
   filename: (req, file, cb) => {
@@ -16,8 +20,8 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const filetypes = /jpe?g|png|webp/;
-  const mimetypes = /image\/jpe?g|image\/png||image\/webp/;
+  const filetypes = /\.(jpe?g|png|webp)$/i;
+  const mimetypes = /^image\/(jpeg|jpg|png|webp)$/i;
 
   const extname = path.extname(file.originalname);
   const mimetype = file.mimetype;
@@ -37,9 +41,10 @@ router.post("/", (req, res) => {
     if (err) {
       res.status(400).send({ message: err.message });
     } else if (req.file) {
+      const imageUrl = `/${path.relative(process.cwd(), req.file.path).replace(/\\/g, "/")}`;
       res.status(200).send({
         message: "Image uploaded successfully",
-        image: `/${req.file.path}`,
+        image: imageUrl,
       });
     } else {
       res.status(400).send({ message: "No image file provided" });

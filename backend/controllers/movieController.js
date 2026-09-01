@@ -1,8 +1,26 @@
 import Movie from "../models/Movie.js";
 
+const normalizeGenres = (genre) => {
+  if (Array.isArray(genre)) {
+    return genre.filter(Boolean);
+  }
+
+  if (genre) {
+    return [genre];
+  }
+
+  return [];
+};
+
 const createMovie = async (req, res) => {
   try {
-    const newMovie = new Movie(req.body);
+    
+    const moviePayload = {
+      ...req.body,
+      genre: normalizeGenres(req.body.genre),
+    };
+
+    const newMovie = new Movie(moviePayload);
     const savedMovie = await newMovie.save();
     res.json(savedMovie);
   } catch (error) {
@@ -36,9 +54,16 @@ const getSpecificMovie = async (req, res) => {
 const updateMovie = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+        genre: normalizeGenres(req.body.genre),
+      },
+      {
+        new: true,
+      }
+    );
 
     if (!updatedMovie) {
       return res.status(404).json({ message: "Movie not found" });

@@ -6,6 +6,7 @@ import {
   useUploadImageMutation,
   useDeleteMovieMutation,
 } from "../../redux/api/movies";
+import { useFetchGenresQuery } from "../../redux/api/genre";
 import { toast } from "react-toastify";
 
 const UpdateMovie = () => {
@@ -19,14 +20,25 @@ const UpdateMovie = () => {
     cast: [],
     ratings: 0,
     image: null,
+    genre: [],
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
   const { data: initialMovieData } = useGetSpecificMovieQuery(id);
+  const { data: genres } = useFetchGenresQuery();
 
   useEffect(() => {
     if (initialMovieData) {
-      setMovieData(initialMovieData);
+      const normalizedGenre = Array.isArray(initialMovieData.genre)
+        ? initialMovieData.genre
+        : initialMovieData.genre
+          ? [initialMovieData.genre]
+          : [];
+
+      setMovieData({
+        ...initialMovieData,
+        genre: normalizedGenre,
+      });
     }
   }, [initialMovieData]);
 
@@ -48,6 +60,20 @@ const UpdateMovie = () => {
     }));
   };
 
+  const handleGenreToggle = (genreId) => {
+    setMovieData((prevData) => {
+      const currentGenres = Array.isArray(prevData.genre) ? prevData.genre : [];
+      const exists = currentGenres.includes(genreId);
+
+      return {
+        ...prevData,
+        genre: exists
+          ? currentGenres.filter((id) => id !== genreId)
+          : [...currentGenres, genreId],
+      };
+    });
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
@@ -59,9 +85,10 @@ const UpdateMovie = () => {
         !movieData.name ||
         !movieData.year ||
         !movieData.detail ||
-        !movieData.cast
+        !movieData.cast ||
+        movieData.genre.length === 0
       ) {
-        toast.error("Please fill in all required fields");
+        toast.error("Please fill in all required fields and select at least one genre");
         return;
       }
 
@@ -160,6 +187,55 @@ const UpdateMovie = () => {
               className="border px-2 py-1 w-full"
             />
           </label>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-2">Genres:</label>
+          <div className="border rounded-md p-3 bg-white">
+            {!genres ? (
+              <p className="text-slate-500">Loading genres...</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {genres.map((genre) => {
+                  const isSelected = movieData.genre.includes(genre._id);
+
+                  return (
+                    <button
+                      type="button"
+                      key={genre._id}
+                      onClick={() => handleGenreToggle(genre._id)}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
+                        isSelected
+                          ? "border-teal-600 bg-teal-600 text-white shadow-md"
+                          : "border-slate-300 bg-slate-100 text-slate-700 hover:border-slate-400 hover:bg-slate-200"
+                      }`}
+                    >
+                      {genre.name}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2 min-h-[32px]">
+            {movieData.genre.length > 0 ? (
+              movieData.genre.map((genreId) => {
+                const selectedGenre = genres?.find((genre) => genre._id === genreId);
+
+                return selectedGenre ? (
+                  <span
+                    key={genreId}
+                    className="rounded-full bg-slate-900 px-2.5 py-1 text-xs font-medium text-white"
+                  >
+                    {selectedGenre.name}
+                  </span>
+                ) : null;
+              })
+            ) : (
+              <span className="text-sm text-slate-500">No genres selected</span>
+            )}
+          </div>
         </div>
 
         <div className="mb-4">

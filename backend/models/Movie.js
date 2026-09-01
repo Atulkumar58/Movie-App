@@ -20,7 +20,15 @@ const movieSchema = new mongoose.Schema(
     name: { type: String, required: true },
     image: { type: String },
     year: { type: Number, required: true },
-    genre: { type: ObjectId, ref: "Genre", required: true },
+    genre: {
+      type: [{ type: ObjectId, ref: "Genre" }],
+      required: true,
+      default: [],
+      validate: {
+        validator: (value) => Array.isArray(value) && value.length > 0,
+        message: "At least one genre is required",
+      },
+    },
     detail: { type: String, required: true },
     cast: [{ type: String }],
     reviews: [reviewSchema],

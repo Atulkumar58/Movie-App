@@ -46,7 +46,11 @@ const AllMovies = () => {
   };
 
   const handleGenreClick = (genreId) => {
-    const filterByGenre = data.filter((movie) => movie.genre === genreId);
+    const filterByGenre = data.filter((movie) =>
+      Array.isArray(movie.genre)
+        ? movie.genre.includes(genreId)
+        : movie.genre === genreId
+    );
     dispatch(setFilteredMovies(filterByGenre));
   };
 

@@ -17,7 +17,7 @@ const CreateMovie = () => {
     cast: [],
     rating: 0,
     image: null,
-    genre: "",
+    genre: [],
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -38,28 +38,32 @@ const CreateMovie = () => {
     if (genres) {
       setMovieData((prevData) => ({
         ...prevData,
-        genre: genres[0]?._id || "",
+        genre: Array.isArray(prevData.genre) ? prevData.genre : [],
       }));
-      console.log(genres[0]?._id);
     }
   }, [genres]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "genre") {
-      const selectedGenre = genres.find((genre) => genre.name === value);
+    setMovieData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-      setMovieData((prevData) => ({
+  const handleGenreToggle = (genreId) => {
+    setMovieData((prevData) => {
+      const currentGenres = Array.isArray(prevData.genre) ? prevData.genre : [];
+      const exists = currentGenres.includes(genreId);
+
+      return {
         ...prevData,
-        genre: selectedGenre ? selectedGenre._id : "",
-      }));
-    } else {
-      setMovieData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+        genre: exists
+          ? currentGenres.filter((id) => id !== genreId)
+          : [...currentGenres, genreId],
+      };
+    });
   };
 
   const handleImageChange = (e) => {
@@ -74,9 +78,10 @@ const CreateMovie = () => {
         !movieData.year ||
         !movieData.detail ||
         !movieData.cast ||
+        movieData.genre.length === 0 ||
         !selectedImage
       ) {
-        toast.error("Please fill all required fields");
+        toast.error("Please fill all required fields and select at least one genre");
         return;
       }
 
@@ -110,7 +115,7 @@ const CreateMovie = () => {
           cast: [],
           ratings: 0,
           image: null,
-          genre: "",
+          genre: [],
         });
 
         toast.success("Movie Added To Database");
@@ -175,25 +180,52 @@ const CreateMovie = () => {
           </label>
         </div>
         <div className="mb-4">
-          <label className="block">
-            Genre:
-            <select
-              name="genre"
-              value={movieData.genre}
-              onChange={handleChange}
-              className="border px-2 py-1 w-full"
-            >
-              {isLoadingGenres ? (
-                <option>Loading genres...</option>
-              ) : (
-                genres.map((genre) => (
-                  <option key={genre.id} value={genre.id}>
-                    {genre.name}
-                  </option>
-                ))
-              )}
-            </select>
-          </label>
+          <label className="block mb-2">Genres:</label>
+          <div className="border rounded-md p-3 bg-white">
+            {isLoadingGenres ? (
+              <p className="text-slate-500">Loading genres...</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {genres?.map((genre) => {
+                  const isSelected = movieData.genre.includes(genre._id);
+
+                  return (
+                    <button
+                      type="button"
+                      key={genre._id}
+                      onClick={() => handleGenreToggle(genre._id)}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
+                        isSelected
+                          ? "border-teal-600 bg-teal-600 text-white shadow-md"
+                          : "border-slate-300 bg-slate-100 text-slate-700 hover:border-slate-400 hover:bg-slate-200"
+                      }`}
+                    >
+                      {genre.name}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2 min-h-[32px]">
+            {movieData.genre.length > 0 ? (
+              movieData.genre.map((genreId) => {
+                const selectedGenre = genres?.find((genre) => genre._id === genreId);
+
+                return selectedGenre ? (
+                  <span
+                    key={genreId}
+                    className="rounded-full bg-slate-900 px-2.5 py-1 text-xs font-medium text-white"
+                  >
+                    {selectedGenre.name}
+                  </span>
+                ) : null;
+              })
+            ) : (
+              <span className="text-sm text-slate-500">No genres selected</span>
+            )}
+          </div>
         </div>
 
         <div className="mb-4">

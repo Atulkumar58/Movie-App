@@ -21,38 +21,69 @@ const MoviesContainerPage = () => {
   };
 
   const filteredMovies = data?.filter(
-    (movie) => selectedGenre === null || movie.genre === selectedGenre
+    (movie) =>
+      selectedGenre === null ||
+      (Array.isArray(movie.genre)
+        ? movie.genre.includes(selectedGenre)
+        : movie.genre === selectedGenre)
   );
 
   return (
-    <div className="flex flex-col lg:flex-row lg:justify-between items-center">
-      <nav className=" ml-[4rem] flex flex-row xl:flex-col lg:flex-col md:flex-row sm:flex-row">
-        {genres?.map((g) => (
-          <button
-            key={g._id}
-            className={`transition duration-300 ease-in-out hover:bg-gray-200 block p-2 rounded mb-[1rem] text-lg ${
-              selectedGenre === g._id ? "bg-gray-200" : ""
-            }`}
-            onClick={() => handleGenreClick(g._id)}
-          >
-            {g.name}
-          </button>
-        ))}
-      </nav>
+    <div className="flex flex-col gap-6 px-4 py-6 lg:flex-row lg:items-start lg:px-6 xl:px-8">
+      <aside className="w-full lg:w-60 xl:w-72">
+        <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Genres
+          </p>
 
-      <section className="flex flex-col justify-center items-center w-full lg:w-auto">
-        <div className="w-full lg:w-[100rem] mb-8 ">
-          <h1 className="mb-5">Choose For You</h1>
+          <div className="flex flex-wrap gap-2 lg:flex-col lg:items-stretch">
+            <button
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                selectedGenre === null
+                  ? "bg-slate-900 text-white shadow-md"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+              onClick={() => handleGenreClick(null)}
+            >
+              All
+            </button>
+
+            {genres?.map((g) => (
+              <button
+                key={g._id}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                  selectedGenre === g._id
+                    ? "bg-slate-900 text-white shadow-md"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
+                onClick={() => handleGenreClick(g._id)}
+              >
+                {g.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </aside>
+
+      <section className="flex w-full flex-col items-center gap-8">
+        <div className="w-full max-w-[100rem]">
+          <h1 className="mb-5 inline-flex items-center rounded-full border border-sky-400/60 bg-sky-100 px-4 py-2 text-xl font-bold text-slate-900 shadow-sm shadow-sky-900/20">
+            Choose For You
+          </h1>
           <SliderUtil data={randomMovies} />
         </div>
 
-        <div className="w-full lg:w-[100rem] mb-8">
-          <h1 className="mb-5">Top Movies</h1>
+        <div className="w-full max-w-[100rem]">
+          <h1 className="mb-5 inline-flex items-center rounded-full border border-amber-400/70 bg-amber-100 px-4 py-2 text-xl font-bold text-slate-900 shadow-sm shadow-amber-900/20">
+            Top Movies
+          </h1>
           <SliderUtil data={topMovies} />
         </div>
 
-        <div className="w-full lg:w-[100rem] mb-8">
-          <h1 className="mb-5">Choose Movie</h1>
+        <div className="w-full max-w-[100rem]">
+          <h1 className="mb-5 inline-flex items-center rounded-full border border-emerald-400/70 bg-emerald-100 px-4 py-2 text-xl font-bold text-slate-900 shadow-sm shadow-emerald-900/20">
+            Choose Movie
+          </h1>
           <SliderUtil data={filteredMovies} />
         </div>
       </section>
