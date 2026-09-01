@@ -42,6 +42,7 @@ const Navigation = () => {
           <Link
             to="/"
             className="flex items-center transition-transform transform hover:translate-x-2"
+            title="Home"
           >
             <AiOutlineHome className="mr-2 mt-[3rem]" size={26} />
             <span className="hidden nav-item-name mt-[3rem]">Home</span>
@@ -50,6 +51,7 @@ const Navigation = () => {
           <Link
             to="/movies"
             className="flex items-center transition-transform transform hover:translate-x-2 ml-[1rem]"
+            title="Browse Movies"
           >
             <MdOutlineLocalMovies className="mr-2 mt-[3rem]" size={26} />
             <span className="hidden nav-item-name mt-[3rem]">SHOP</span>
