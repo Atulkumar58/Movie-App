@@ -35,33 +35,32 @@ const Navigation = () => {
   };
 
   return (
-    <div className="fixed bottom-10 left-[30rem] transform translate-x-1/2 translate-y-1/2 z-50 bg-[#0f0f0f] border w-[30%] px-[4rem] mb-[2rem] rounded">
-      <section className="flex justify-between items-center">
-        {/* Section 1 */}
-        <div className="flex justify-center items-center mb-[2rem]">
+    <div className="bg-slate-900/30 px-3 py-2 backdrop-blur-sm rounded-full">
+      <section className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-center gap-2">
           <Link
             to="/"
-            className="flex items-center transition-transform transform hover:translate-x-2"
+            className="flex items-center rounded-full border border-amber-300/40 bg-slate-800/80 p-2 text-amber-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:text-white"
             title="Home"
           >
-            <AiOutlineHome className="mr-2 mt-[3rem]" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Home</span>
+            <AiOutlineHome size={18} />
+            <span className="sr-only">Home</span>
           </Link>
 
           <Link
             to="/movies"
-            className="flex items-center transition-transform transform hover:translate-x-2 ml-[1rem]"
+            className="flex items-center rounded-full border border-amber-300/40 bg-slate-800/80 p-2 text-amber-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:text-white"
             title="Browse Movies"
           >
-            <MdOutlineLocalMovies className="mr-2 mt-[3rem]" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">SHOP</span>
+            <MdOutlineLocalMovies size={18} />
+            <span className="sr-only">Browse Movies</span>
           </Link>
         </div>
-        {/* Section 2 */}
+
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className="text-gray-800 focus:outline-none"
+            className="flex items-center gap-2 rounded-full border border-amber-300/40 bg-slate-800/80 px-3 py-2 text-sm font-medium text-white focus:outline-none hover:border-amber-200"
           >
             {userInfo ? (
               <span className="text-white">{userInfo.username}</span>
@@ -72,12 +71,12 @@ const Navigation = () => {
             {userInfo && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 ml-1 ${
-                  dropdownOpen ? "transform rotate-180" : ""
+                className={`h-4 w-4 ${
+                  dropdownOpen ? "rotate-180" : ""
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="white"
+                stroke="currentColor"
               >
                 <path
                   strokeLinecap="round"
