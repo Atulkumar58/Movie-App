@@ -1,4 +1,6 @@
 import Movie from "../models/Movie.js";
+import path from "path";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const normalizeGenres = (genre) => {
   if (Array.isArray(genre)) {
@@ -14,7 +16,14 @@ const normalizeGenres = (genre) => {
 
 const createMovie = async (req, res) => {
   try {
+    // console.log(process.cwd());
+    // console.log("Request body:", req.body);
     
+    // const uploadedImage = await uploadOnCloudinary(req.body.image); 
+    // req.body.image = uploadedImage.url;
+    // console.log("Uploaded image URL:", req.body.image);
+    // console.log("Request body:", req.body);
+
     const moviePayload = {
       ...req.body,
       genre: normalizeGenres(req.body.genre),
