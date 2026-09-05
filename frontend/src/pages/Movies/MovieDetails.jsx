@@ -20,6 +20,11 @@ const MovieDetails = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (rating === 0) {
+      toast.error("Please select a rating");
+      return;
+    }
+
     try {
       await createReview({
         id: movieId,
@@ -28,6 +33,8 @@ const MovieDetails = () => {
       }).unwrap();
 
       refetch();
+      setRating(0);
+      setComment("");
 
       toast.success("Review created successfully");
     } catch (error) {

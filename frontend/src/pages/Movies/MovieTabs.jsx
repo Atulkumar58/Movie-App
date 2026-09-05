@@ -1,11 +1,42 @@
 import { Link } from "react-router-dom";
 
-const MovieTabs = ({ userInfo, submitHandler, comment, setComment, movie }) => {
+const MovieTabs = ({ userInfo, submitHandler, comment, setComment, movie, rating, setRating }) => {
+  const renderStars = (currentRating, interactive = false) => {
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type={interactive ? "button" : "div"}
+            onClick={interactive ? () => setRating(star) : undefined}
+            className={`text-3xl ${
+              star <= currentRating ? "text-yellow-400" : "text-gray-400"
+            } ${interactive ? "cursor-pointer hover:text-yellow-300" : ""}`}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div>
       <section>
         {userInfo ? (
           <form onSubmit={submitHandler}>
+            <div className="my-4">
+              <label className="block text-xl mb-3">
+                Rating
+              </label>
+              {renderStars(rating, true)}
+              {rating > 0 && (
+                <p className="text-yellow-400 font-semibold mt-2">
+                  {rating} / 5
+                </p>
+              )}
+            </div>
+
             <div className="my-2">
               <label htmlFor="comment" className="block text-xl mb-2">
                 Write Your Review
@@ -49,6 +80,10 @@ const MovieTabs = ({ userInfo, submitHandler, comment, setComment, movie }) => {
                 <p className="text-[#B0B0B0]">
                   {review.createdAt.substring(0, 10)}
                 </p>
+              </div>
+
+              <div className="mt-2">
+                {renderStars(review.rating, false)}
               </div>
 
               <p className="my-4">{review.comment}</p>
