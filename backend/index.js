@@ -1,20 +1,20 @@
+// Configuration - Must be first!
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({
+    path : path.resolve(process.cwd(), "../.env")
+});
+
 // Packages
 import express from "express";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-import path from "path";
 
 // Files
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import genreRoutes from "./routes/genreRoutes.js";
 import moviesRoutes from "./routes/moviesRoutes.js";
-import uploadRoutes from "./routes/uploadRoutes.js";
-
-// Configuration
-dotenv.config({
-    path : path.resolve(process.cwd(), "../.env")
-});
+import uploadRoutes from "./routes/uploadRoutes.js";        
 console.log(`Environment Variables Loaded:`, process.env.MONGO_URI);
 connectDB();
 

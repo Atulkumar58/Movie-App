@@ -19,7 +19,7 @@ const createMovie = async (req, res) => {
     // console.log(process.cwd());
     // console.log("Request body:", req.body);
     
-    // const uploadedImage = await uploadOnCloudinary(req.body.image); 
+    const uploadedImage = (await uploadOnCloudinary(req.body.image))?.secure_url; 
     // req.body.image = uploadedImage.url;
     // console.log("Uploaded image URL:", req.body.image);
     // console.log("Request body:", req.body);
