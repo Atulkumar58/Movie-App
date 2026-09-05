@@ -51,7 +51,7 @@ const MovieDetails = () => {
           <img
             src={movie?.image}
             alt={movie?.name}
-            className="w-[70%] rounded"
+            className="w-[35%] rounded"
           />
         </div>
         {/* Container One */}
