@@ -211,15 +211,15 @@ File sent to /api/v1/upload (POST with FormData)
     ↓
 Backend uploadRoutes handles file
     ↓
-multer saves file to /backend/uploads directory
+    ├─ Multer receives and validates the uploaded image
     ↓
-Backend returns file path
+    Movie creation uploads the temporary file to Cloudinary
     ↓
-Frontend stores path in movie data
+    Backend stores the hosted Cloudinary URL in movie data
     ↓
-File served via /uploads route (static file serving)
+    Temporary local file is removed after transfer
     ↓
-Displayed in movie card/details
+    Image is displayed from Cloudinary in movie cards/details
 ```
 
 **Key Files:**
@@ -284,7 +284,8 @@ backend/
 │   ├── asyncHandler.js      # Error handling wrapper
 │   └── checkId.js           # MongoDB ObjectId validation
 ├── utils/
-│   └── createToken.js       # JWT token generation
+│   ├── createToken.js        # JWT token generation
+│   └── cloudinary.js         # Cloudinary media upload utility
 └── uploads/                 # Directory for uploaded files
 ```
 
@@ -356,6 +357,7 @@ frontend/src/
 - **Authentication**: JWT (jsonwebtoken)
 - **Password Hashing**: bcryptjs
 - **File Upload**: Multer
+- **Media Storage**: Cloudinary
 - **Environment**: dotenv
 
 ### Frontend
@@ -389,6 +391,9 @@ frontend/src/
    MONGO_URI=mongodb://localhost:27017/movieapp
    PORT=3000
    JWT_SECRET=your_jwt_secret_key
+    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+    CLOUDINARY_API_KEY=your_cloudinary_api_key
+    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    ```
 
 3. Install dependencies:
