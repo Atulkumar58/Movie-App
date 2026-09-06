@@ -44,7 +44,20 @@ Movie App is a full-stack web application that allows users to browse, search, a
 │  ├─ Genres Collection                                       │
 │  └─ Movies Collection                                       │
 └─────────────────────────────────────────────────────────────┘
+                           │
+                           │ Hosted media URLs
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Cloudinary                               │
+│  ├─ Movie poster/image storage                              │
+│  └─ Hosted media delivery                                    │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+Movie images are received by the Express upload workflow, transferred to
+Cloudinary through the media utility, and referenced in MongoDB through their
+hosted URLs. MongoDB stores application data, while Cloudinary handles hosted
+media storage and delivery.
 
 ---
 
@@ -477,7 +490,7 @@ frontend/src/
 ## 📝 Notes
 
 - All HTTP requests include cookies for authentication
-- File uploads stored in `/backend/uploads` directory
+- Multer temporarily stores uploaded files before they are transferred to Cloudinary
 - Redux RTK Query handles caching and request deduplication
 - Tailwind CSS for responsive design
 - Real-time features through component state management
