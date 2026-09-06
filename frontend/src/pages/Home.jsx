@@ -1,5 +1,6 @@
 import Header from "./Movies/Header";
 import MoviesContainerPage from "./Movies/MoviesContainerPage";
+import Footer from "../component/Footer";
 
 const Home = () => {
   return (
@@ -9,6 +10,8 @@ const Home = () => {
       <section className="mt-[10rem]">
         <MoviesContainerPage />
       </section>
+
+      <Footer />
     </>
   );
 };
