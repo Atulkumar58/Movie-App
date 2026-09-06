@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FiEye, FiEyeOff, FiFilm, FiLock, FiMail } from "react-icons/fi";
 import Loader from "../../component/Loader";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { useLoginMutation } from "../../redux/api/users";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,73 +42,92 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <section className="pl-[10rem] flex flex-wrap">
-        <div className="mr-[4rem] mt-[5rem]">
-          <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
+    <div className="bg-slate-950">
+      <section className="flex min-h-[calc(100vh-90px)] items-center justify-center px-5 py-12 sm:px-8">
+        <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-xl sm:p-8">
+          <div className="mb-8">
+            <div className="mb-4 flex items-center gap-3 text-amber-300">
+              <FiFilm size={22} />
+              <span className="text-sm font-semibold">Movie Review System</span>
+            </div>
+            <h2 className="text-3xl font-bold text-white">Welcome back</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Sign in to continue your movie journey.
+            </p>
+          </div>
 
-          <form onSubmit={submitHandler} className="container w-[40rem]">
-            <div className="my-[2rem]">
+          <form onSubmit={submitHandler} className="space-y-5">
+            <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-white"
+                className="mb-2 block text-sm font-medium text-slate-200"
               >
-                Email Address
+                Email address
               </label>
-              <input
-                type="email"
-                id="email"
-                className="mt-1 p-2 border rounded w-full"
-                placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <div className="relative">
+                <FiMail className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/80 py-3 pl-11 pr-4 text-white outline-none transition placeholder:text-slate-600 focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="my-[2rem]">
+
+            <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-white"
+                className="mb-2 block text-sm font-medium text-slate-200"
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                className="mt-1 p-2 border rounded w-full"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="relative">
+                <FiLock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  required
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/80 py-3 pl-11 pr-12 text-white outline-none transition placeholder:text-slate-600 focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  title={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition hover:text-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400/40"
+                >
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button
               disabled={isLoading}
               type="submit"
-              className="bg-teal-500 text-white px-4 py-2 rounded cursor-pointer my-[1rem]"
+              className="w-full rounded-xl bg-amber-300 px-4 py-3 font-bold text-slate-950 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isLoading ? "Signing In ..." : "Sign In"}
+              {isLoading ? "Signing in..." : "Sign in"}
             </button>
             {isLoading && <Loader />}
           </form>
 
-          <div className="mt-4">
-            <p className="text-white">
-              New Customer?{" "}
-              <Link
-                to={redirect ? `/register?redirect=${redirect}` : "/register"}
-                className="text-teal-500 hover:underline"
-              >
-                Register
-              </Link>
-            </p>
-          </div>
+          <p className="mt-7 text-center text-sm text-slate-400">
+            New customer?{" "}
+            <Link
+              to={redirect ? `/register?redirect=${redirect}` : "/register"}
+              className="font-semibold text-sky-300 transition hover:text-sky-200 hover:underline"
+            >
+              Create an account
+            </Link>
+          </p>
         </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1485095329183-d0797cdc5676?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          className="h-[65rem] w-[55%] xl:block md:hidden sm:hidden rounded-lg"
-        />
       </section>
     </div>
   );
