@@ -61,6 +61,46 @@ media storage and delivery.
 
 ---
 
+## UI Showcase
+
+The application combines a polished movie-browsing experience with focused
+admin tools for managing content, genres, and community reviews.
+
+### User Experience
+
+| Home and discovery | Genre-based browsing |
+| --- | --- |
+| [![Movie App home page](UI%20images/Home-page.png)](UI%20images/Home-page.png) | [![Genre-based movie selection](UI%20images/Genre-wise-selection.png)](UI%20images/Genre-wise-selection.png) |
+| [Home page](UI%20images/Home-page.png) | [Genre-wise selection](UI%20images/Genre-wise-selection.png) |
+
+| Filter and search | Movie reviews |
+| --- | --- |
+| [![Search movies using filters](UI%20images/Search-movies-based-on-filters.png)](UI%20images/Search-movies-based-on-filters.png) | [![Write a movie review](UI%20images/Review-writing.png)](UI%20images/Review-writing.png) |
+| [Search movies based on filters](UI%20images/Search-movies-based-on-filters.png) | [Review writing](UI%20images/Review-writing.png) |
+
+### Admin Workspace
+
+| Dashboard | Create a movie |
+| --- | --- |
+| [![Admin dashboard](UI%20images/Admin-Dashboard.png)](UI%20images/Admin-Dashboard.png) | [![Create a movie](UI%20images/Admin-Create-movie.png)](UI%20images/Admin-Create-movie.png) |
+| [Admin dashboard](UI%20images/Admin-Dashboard.png) | [Create movie](UI%20images/Admin-Create-movie.png) |
+
+| Select a movie to update | Update movie details |
+| --- | --- |
+| [![Select a movie to update](UI%20images/Select-update-movie.png)](UI%20images/Select-update-movie.png) | [![Update movie details](UI%20images/Update-movie.png)](UI%20images/Update-movie.png) |
+| [Select movie for update](UI%20images/Select-update-movie.png) | [Update movie](UI%20images/Update-movie.png) |
+
+| Genre management | Review management |
+| --- | --- |
+| [![Manage movie genres](UI%20images/Manage-genre.png)](UI%20images/Manage-genre.png) | [![Manage movie reviews](UI%20images/Manage-review.png)](UI%20images/Manage-review.png) |
+| [Manage genres](UI%20images/Manage-genre.png) | [Manage reviews](UI%20images/Manage-review.png) |
+
+### Developer Details
+
+[![Developer details](UI%20images/Developer-details.png)](UI%20images/Developer-details.png)
+
+---
+
 ## 🔄 Application Flow
 
 ### 1. **User Authentication Flow**
