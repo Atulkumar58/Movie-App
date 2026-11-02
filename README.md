@@ -61,6 +61,12 @@ media storage and delivery.
 
 ---
 
+## Live Demo
+
+[Open the live Movie App](https://movie-app-frontend-vc8q.onrender.com/)
+
+---
+
 ## UI Showcase
 
 The application combines a polished movie-browsing experience with focused
