@@ -1,5 +1,9 @@
 # Movie App - Application Flow Documentation
 
+## Live Demo
+
+[Open the live Movie App](https://movie-app-frontend-vc8q.onrender.com/)
+
 ## 📋 Project Overview
 
 Movie App is a full-stack web application that allows users to browse, search, and manage movies. It features user authentication, genre management, movie management, and an admin dashboard with real-time analytics.
@@ -58,14 +62,6 @@ Movie images are received by the Express upload workflow, transferred to
 Cloudinary through the media utility, and referenced in MongoDB through their
 hosted URLs. MongoDB stores application data, while Cloudinary handles hosted
 media storage and delivery.
-
----
-
-## Live Demo
-
-[Open the live Movie App](https://movie-app-frontend-vc8q.onrender.com/)
-
----
 
 ## UI Showcase
 
