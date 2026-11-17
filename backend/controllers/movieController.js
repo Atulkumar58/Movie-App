@@ -198,6 +198,78 @@ const getRandomMovies = async (req, res) => {
   }
 };
 
+const getPersonalizedMovies = async (req, res) => {
+  try {
+    const genreRatings = await Movie.aggregate([
+      { $unwind: "$reviews" },
+      { $match: { "reviews.user": req.user._id } },
+      { $unwind: "$genre" },
+      {
+        $group: {
+          _id: "$genre",
+          averageRating: { $avg: "$reviews.rating" },
+          ratingCount: { $sum: 1 },
+        },
+      },
+      { $sort: { averageRating: -1, ratingCount: -1 } },
+    ]);
+
+    if (genreRatings.length === 0) {
+      const fallbackMovies = await Movie.aggregate([{ $sample: { size: 10 } }]);
+      return res.json(fallbackMovies);
+    }
+
+    const reviewedMovieIds = await Movie.find({
+      "reviews.user": req.user._id,
+    }).distinct("_id");
+    const rankedGenreIds = genreRatings.map((genre) => genre._id);
+    const genreRank = new Map(
+      rankedGenreIds.map((genreId, index) => [genreId.toString(), index])
+    );
+
+    let personalizedMovies = await Movie.find({
+      _id: { $nin: reviewedMovieIds },
+      genre: { $in: rankedGenreIds },
+    })
+      .populate("genre")
+      .lean();
+
+    personalizedMovies.sort((firstMovie, secondMovie) => {
+      const getBestGenreRank = (movie) =>
+        Math.min(
+          ...movie.genre.map(
+            (genre) => genreRank.get(genre._id.toString()) ?? Infinity
+          )
+        );
+
+      const rankDifference =
+        getBestGenreRank(firstMovie) - getBestGenreRank(secondMovie);
+
+      if (rankDifference !== 0) {
+        return rankDifference;
+      }
+
+      return new Date(secondMovie.createdAt) - new Date(firstMovie.createdAt);
+    });
+
+    if (personalizedMovies.length === 0) {
+      personalizedMovies = await Movie.find({
+        _id: { $nin: reviewedMovieIds },
+      })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .populate("genre")
+        .lean();
+    } else {
+      personalizedMovies = personalizedMovies.slice(0, 10);
+    }
+
+    res.json(personalizedMovies);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createMovie,
   getAllMovies,
@@ -209,4 +281,5 @@ export {
   getNewMovies,
   getTopMovies,
   getRandomMovies,
+  getPersonalizedMovies,
 };

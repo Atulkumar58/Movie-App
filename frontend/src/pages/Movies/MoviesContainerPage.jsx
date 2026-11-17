@@ -3,16 +3,25 @@ import {
   useGetNewMoviesQuery,
   useGetTopMoviesQuery,
   useGetRandomMoviesQuery,
+  useGetPersonalizedMoviesQuery,
 } from "../../redux/api/movies";
 
 import { useFetchGenresQuery } from "../../redux/api/genre";
 import SliderUtil from "../../component/SliderUtil";
+import { useSelector } from "react-redux";
 
 const MoviesContainerPage = () => {
+  const { userInfo } = useSelector((state) => state.auth);
   const { data } = useGetNewMoviesQuery();
   const { data: topMovies } = useGetTopMoviesQuery();
   const { data: genres } = useFetchGenresQuery();
-  const { data: randomMovies } = useGetRandomMoviesQuery();
+  const { data: randomMovies } = useGetRandomMoviesQuery(undefined, {
+    skip: Boolean(userInfo),
+  });
+  const { data: personalizedMovies } = useGetPersonalizedMoviesQuery(
+    undefined,
+    { skip: !userInfo }
+  );
 
   const [selectedGenre, setSelectedGenre] = useState(null);
   const visibleGenres = genres?.slice(0, 8) || [];
@@ -36,7 +45,7 @@ const MoviesContainerPage = () => {
           <h1 className="mb-5 inline-flex items-center rounded-full border border-sky-400/60 bg-sky-100 px-4 py-2 text-xl font-bold text-slate-900 shadow-sm shadow-sky-900/20">
             Choose For You
           </h1>
-          <SliderUtil data={randomMovies} />
+          <SliderUtil data={userInfo ? personalizedMovies : randomMovies} />
         </div>
 
         <div className="w-full max-w-[100rem]">

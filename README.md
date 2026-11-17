@@ -178,6 +178,12 @@ User can:
 - [Movies slice](frontend/src/redux/features/movies/moviesSlice.js)
 - [Backend movies routes](backend/routes/moviesRoutes.js)
 
+For authenticated users, the **Choose For You** section calls
+`GET /api/v1/movies/personalized-movies`. The backend ranks genres by the
+user's average review rating, then by the number of reviews in that genre,
+and returns unrated movies from the highest-ranked genres. Users without
+review history receive the existing random-movie fallback.
+
 ---
 
 ### 3. **Movie Details & Comments Flow**

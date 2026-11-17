@@ -68,6 +68,10 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
     getRandomMovies: builder.query({
       query: () => `${MOVIE_URL}/random-movies`,
     }),
+
+    getPersonalizedMovies: builder.query({
+      query: () => `${MOVIE_URL}/personalized-movies`,
+    }),
   }),
 });
 
@@ -84,4 +88,5 @@ export const {
   useGetNewMoviesQuery,
   useGetTopMoviesQuery,
   useGetRandomMoviesQuery,
+  useGetPersonalizedMoviesQuery,
 } = moviesApiSlice;

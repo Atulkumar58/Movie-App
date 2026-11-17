@@ -13,6 +13,7 @@ import {
   getNewMovies,
   getTopMovies,
   getRandomMovies,
+  getPersonalizedMovies,
 } from "../controllers/movieController.js";
 // Middlewares
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
@@ -24,6 +25,7 @@ router.get("/specific-movie/:id", getSpecificMovie);
 router.get("/new-movies", getNewMovies);
 router.get("/top-movies", getTopMovies);
 router.get("/random-movies", getRandomMovies);
+router.get("/personalized-movies", authenticate, getPersonalizedMovies);
 
 // Restricted Routes
 router.post("/:id/reviews", authenticate, checkId, movieReview);
